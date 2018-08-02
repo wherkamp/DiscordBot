@@ -8,6 +8,7 @@ import me.kingtux.phphideout.leaderboard.LeaderboardManager
 import me.kingtux.phphideout.listeners.ChatListener
 import me.kingtux.phphideout.listeners.LeaveEvent
 import me.kingtux.phphideout.listeners.PlayerJoin
+import me.kingtux.phphideout.listeners.ReactionListener
 import sx.blah.discord.api.ClientBuilder
 import sx.blah.discord.api.IDiscordClient
 import sx.blah.discord.api.events.IListener
@@ -76,9 +77,10 @@ class Bot : IListener<ReadyEvent> {
 
     private fun loadEvents() {
         discordClient.dispatcher.registerListener(this)
-        discordClient.dispatcher.registerListener(ChatListener())
+        discordClient.dispatcher.registerListener(ChatListener(this))
         discordClient.dispatcher.registerListener(PlayerJoin(this))
         discordClient.dispatcher.registerListener(LeaveEvent(this))
+        discordClient.dispatcher.registerListener(ReactionListener(this))
 
     }
 }

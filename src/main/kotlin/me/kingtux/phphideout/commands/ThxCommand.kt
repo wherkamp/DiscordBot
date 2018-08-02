@@ -18,11 +18,20 @@ class ThxCommand(val bot: Bot) : CommandExecutor {
             }
             bot.userManager.thxUser(iUser, message.mentions.get(0))
             channel.sendMessage("You have thanked the user")
-
+            if (bot.userManager.needsLevelUp(message.mentions.get(0))) {
+                bot.userManager.levelUp(message.mentions.get(0))
+                channel.sendMessage(bot.userManager.generateLevelUpMesage(message.mentions.get(0), bot.userManager.getRank(message.mentions.get(0))))
+            }
         } else {
             channel.sendMessage("Sorry you must mention a user!")
         }
 
+        return "";
+    }
+
+    @Command(aliases = ["test()"], description = "Registers your account", usage = "&this->thx")
+    public fun test(args: Array<String>, iUser: IUser, channel: IChannel, message: IMessage): String {
+        channel.sendMessage(bot.userManager.generateLevelUpMesage(iUser, 1));
         return "";
     }
 }
