@@ -6,6 +6,10 @@ import sx.blah.discord.api.internal.json.objects.EmbedObject
 import sx.blah.discord.handle.impl.obj.ReactionEmoji
 import sx.blah.discord.handle.obj.IMessage
 import sx.blah.discord.util.EmbedBuilder
+import com.vdurmont.emoji.EmojiManager
+import com.vdurmont.emoji.Emoji
+
+
 
 class Leaderboard {
     private val mapped: LinkedHashMap<Long, Int>;

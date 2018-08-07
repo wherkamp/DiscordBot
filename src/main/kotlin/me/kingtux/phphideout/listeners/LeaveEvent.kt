@@ -6,7 +6,8 @@ import sx.blah.discord.handle.impl.events.guild.member.UserLeaveEvent
 
 class LeaveEvent(val bot: Bot) : IListener<UserLeaveEvent> {
 
-    override fun handle(event: UserLeaveEvent) {
-        bot.welcomeChannel.sendMessage(event.user.mention() + " has left the server!")
-    }
+  override fun handle(event: UserLeaveEvent) {
+    bot.userManager.unRegister(event.user.longID);
+    bot.welcomeChannel.sendMessage(event.user.mention() + " has left the server!")
+  }
 }
