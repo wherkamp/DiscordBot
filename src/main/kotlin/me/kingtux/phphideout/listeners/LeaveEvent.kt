@@ -8,6 +8,6 @@ class LeaveEvent(val bot: Bot) : IListener<UserLeaveEvent> {
 
   override fun handle(event: UserLeaveEvent) {
     bot.userManager.unRegister(event.user.longID);
-    bot.welcomeChannel.sendMessage(event.user.mention() + " has left the server!")
+    bot.welcomeChannel.sendMessage(bot.utils.buildMessage(event.user.mention() + " has left the server!").build())
   }
 }

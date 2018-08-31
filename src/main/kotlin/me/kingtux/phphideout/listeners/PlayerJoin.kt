@@ -4,12 +4,17 @@ import me.kingtux.phphideout.Bot
 import sx.blah.discord.api.events.IListener
 import sx.blah.discord.handle.impl.events.guild.member.UserJoinEvent
 import sx.blah.discord.handle.obj.IUser
+import sx.blah.discord.util.RequestBuffer
 
 class PlayerJoin(private val bot: Bot) : IListener<UserJoinEvent> {
 
   override fun handle(event: UserJoinEvent) {
-    bot.welcomeChannel.sendMessage(buildWelcomeMessage(event.user))
     event.user.orCreatePMChannel.sendMessage(buildPM(event.user))
+    bot.userManager.createUser(event.user.longID)
+    event.user.addRole(bot.registeredRole)
+    RequestBuffer.request {
+      bot.generalChannel.sendMessage(bot.utils.buildMessage("Welcome ${event.user.mention()} to PhPHideout! We have just private messaged you the rules!").build())
+    }
   }
 
   private fun buildPM(user: IUser): String {
@@ -19,11 +24,8 @@ class PlayerJoin(private val bot: Bot) : IListener<UserJoinEvent> {
         "4. No links may contain advertisement of any kind, pornography, spoilers, racism or disturbing/offensive content.\n" +
         "5. When chatting, please find the appropriate channel and keep to topic.\n" +
         "6. If you have access to manage the emojis, note that any abuse of this access will not be tolerated.\n" +
-        "7. PHP is an awesome language treat it that way!``` Remember to be supportive. run `\$this->register()` in the welcome channel."
+        "7. PHP is an awesome language treat it that way!\n" +
+        "8. No spamming @${bot.announcementsRole.name} or @${bot.updatesRole.name}```"
   }
 
-  private fun buildWelcomeMessage(user: IUser): String {
-    return "Welcome " + user.mention() + " Please register your account by doing `\$this->register()`. We pmed you all rules and info you could need."
-
-  }
 }

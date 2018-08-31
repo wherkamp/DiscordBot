@@ -16,28 +16,40 @@ class LeaderboardCommand(val bot: Bot) : CommandExecutor {
     return ""
   }
 
-  @Command(aliases = ["rank()"], description = "Gets some rank", usage = "\$this->rank()")
-  public fun userinfo(channel: IChannel, message: IMessage): String {
-    var personToCheck: IUser;
-    if (message.mentions.size >= 1) {
-      personToCheck = message.mentions.get(0);
+  @Command(aliases = ["thx()"], description = "Thxs a user", usage = "\$this->thx() <who>")
+  public fun registerCommand(args: Array<String>, iUser: IUser, channel: IChannel, message: IMessage): String {
+    if (message.mentions.size == 1) {
+      if (message.mentions[0] == iUser) {
+        channel.sendMessage("Sorry, you can't thx yourself.")
+        return "";
+      }
+      if(message.mentions[0].isBot){
+        channel.sendMessage("Sorry, you can't thx a bot.")
+        return ""
+      }
+      if (!bot.userManager.canThx(iUser)) {
+        RequestBuffer.request {
+          channel.sendMessage("You need to wait 30 minutes to thx a new user")
+        }
+        return ""
+      }
+      bot.userManager.thxUser(iUser, message.mentions[0])
+      RequestBuffer.request {
+        channel.sendMessage("You have thanked the user")
+      }
+      if (bot.userManager.needsLevelUp(message.mentions[0])) {
+        bot.userManager.levelUp(message.mentions[0])
+        RequestBuffer.request {
 
+          channel.sendMessage(bot.userManager.generateLevelUpMesage(message.mentions[0], bot.userManager.getRank(message.mentions.get(0))))
+        }
+      }
     } else {
-      personToCheck = message.author;
-    }
-    val embedBuilder = EmbedBuilder();
-    embedBuilder.withTitle(personToCheck.name + " Rank Info")
-    val level = bot.userManager.getLevel(personToCheck).toString();
-
-    embedBuilder.appendField("Rank", bot.userManager.getRank(personToCheck).toString(), true);
-    embedBuilder.appendField("Level", level, true);
-    embedBuilder.appendField("Points", bot.userManager.getPoints(personToCheck).toString() + "/" + bot.userManager.getLevelRequirements(level.toInt() + 1), false);
-    RequestBuffer.request {
-      channel.sendMessage(embedBuilder.build())
+      RequestBuffer.request {
+        channel.sendMessage("Sorry you must mention a user!")
+      }
     }
 
-
-//
-    return ""
+    return "";
   }
 }

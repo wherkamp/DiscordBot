@@ -1,15 +1,14 @@
 package me.kingtux.phphideout
 
 import de.btobastian.sdcf4j.handler.Discord4JHandler
-import me.kingtux.phphideout.commands.HelpCommand
-import me.kingtux.phphideout.commands.LeaderboardCommand
-import me.kingtux.phphideout.commands.RegisterCommands
-import me.kingtux.phphideout.commands.ThxCommand
+import me.kingtux.phphideout.commands.*
 import me.kingtux.phphideout.leaderboard.LeaderboardManager
 import me.kingtux.phphideout.listeners.ChatListener
 import me.kingtux.phphideout.listeners.LeaveEvent
 import me.kingtux.phphideout.listeners.PlayerJoin
 import me.kingtux.phphideout.listeners.ReactionListener
+import org.simpleyaml.configuration.ConfigurationSection
+import org.simpleyaml.configuration.file.YamlFile
 import org.yaml.snakeyaml.Yaml
 import sx.blah.discord.api.ClientBuilder
 import sx.blah.discord.api.IDiscordClient
@@ -26,9 +25,8 @@ class Bot : IListener<ReadyEvent> {
   lateinit var discordClient: IDiscordClient;
   private val token: String;
   private val configFile = File("files" + File.separator + "config.yml")
-  private val yaml = Yaml()
-  private val configYAML = yaml.load<Map<String, Any>>(FileReader(configFile))
-
+  private val configYAML = YamlFile(configFile)
+  val utils = DiscordUtils(this);
   val database: Database;
   val leaderboardManager: LeaderboardManager
   lateinit var userManager: UserManager;
@@ -41,6 +39,7 @@ class Bot : IListener<ReadyEvent> {
 
   constructor(token: String) {
     this.token = token;
+    configYAML.load()
     loadBot()
     database = Database(currentPath() + File.separator + "files" + File.separator + "database.sql")
     leaderboardManager = LeaderboardManager(this)
@@ -67,28 +66,28 @@ class Bot : IListener<ReadyEvent> {
 
   override fun handle(event: ReadyEvent) {
     System.out.println("Server Ready")
-    val roles = configYAML["roles"] as Map<*, *>
-    val channels = configYAML["channel"] as Map<*, *>
-    registeredRole = discordClient.getRoleByID(roles["member"] as Long)
-    updatesRole = discordClient.getRoleByID(roles["updates"] as Long)
-    announcementsRole = discordClient.getRoleByID(roles["announcements"] as Long)
-    botspamChannel = discordClient.getChannelByID(channels["botspam"] as Long)
-    welcomeChannel = discordClient.getChannelByID(channels["welcome"] as Long)
-    generalChannel = discordClient.getChannelByID(channels["general"] as Long)
+    val roles = configYAML["roles"] as ConfigurationSection
+    val channels = configYAML["channel"] as ConfigurationSection
+    registeredRole = discordClient.getRoleByID(roles.getLong("member"))
+    updatesRole = discordClient.getRoleByID(roles.getLong("updates"))
+    announcementsRole = discordClient.getRoleByID(roles.getLong("announcements"))
+    botspamChannel = discordClient.getChannelByID(channels.getLong("botspam"))
+    welcomeChannel = discordClient.getChannelByID(channels.getLong("welcome"))
+    generalChannel = discordClient.getChannelByID(channels.getLong("general"))
     userManager = UserManager(this)
     println("RegisteredRole ${registeredRole.name}")
     println("UpdatesRole ${updatesRole.name}")
     println("AnnouncementsROle ${announcementsRole.name}")
     println("WelcomeChannel ${welcomeChannel.name}")
     println("BotSpam ${botspamChannel.name}")
+    println("General Channel ${generalChannel.name}")
   }
 
   private fun loadCommands() {
     var cmdHandler = Discord4JHandler(discordClient)
     cmdHandler.defaultPrefix = "\$this->"
     println(cmdHandler.defaultPrefix);
-    cmdHandler.registerCommand(RegisterCommands(this))
-    cmdHandler.registerCommand(ThxCommand(this))
+    cmdHandler.registerCommand(ServerCommands(this))
     cmdHandler.registerCommand(LeaderboardCommand(this))
     cmdHandler.registerCommand(HelpCommand(cmdHandler, this))
 

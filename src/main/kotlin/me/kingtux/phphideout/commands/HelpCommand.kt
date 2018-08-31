@@ -21,13 +21,7 @@ class HelpCommand(val commandHandler: CommandHandler, val bot: Bot) : CommandExe
     builder.withColor(Color.BLUE)
 
     for (simpleCommand in commandHandler.commands) {
-      if (simpleCommand.commandAnnotation.aliases.contains("register()")) {
-        if (!bot.userManager.hasUser(user.longID)) {
-          builder.appendField(simpleCommand.commandAnnotation.description, simpleCommand.commandAnnotation.usage, false)
-        }
-      } else {
-        builder.appendField(simpleCommand.commandAnnotation.description, simpleCommand.commandAnnotation.usage, false)
-      }
+      builder.appendField(simpleCommand.commandAnnotation.description, simpleCommand.commandAnnotation.usage, false)
     }
     channel.sendMessage(builder.build())
   }

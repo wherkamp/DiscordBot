@@ -1,6 +1,7 @@
 package me.kingtux.phphideout
 
 import org.apache.commons.io.FileUtils
+import org.simpleyaml.configuration.file.YamlFile
 import org.yaml.snakeyaml.Yaml
 import java.io.File
 import java.io.FileReader
@@ -21,10 +22,9 @@ class Main {
   }
 
   fun getToken(): String {
-    val yaml = Yaml()
-    val obj = yaml.load<Object>(FileReader(configFile))
-    val map = obj as Map<String, Object>;
-    return map.get("token") as String
+    val y = YamlFile(configFile)
+    y.load()
+    return y.getString("token")
   }
 
   @Throws(IOException::class)
