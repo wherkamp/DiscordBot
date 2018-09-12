@@ -3,6 +3,11 @@ package me.kingtux.phphideout
 import sx.blah.discord.api.internal.json.objects.EmbedObject
 import sx.blah.discord.handle.obj.IUser
 import sx.blah.discord.util.EmbedBuilder
+import java.text.SimpleDateFormat
+import java.text.DateFormat
+import com.sun.javafx.perf.PerformanceTracker.logEvent
+import java.util.*
+
 
 class UserManager(val bot: Bot) {
 
@@ -38,6 +43,17 @@ class UserManager(val bot: Bot) {
     prepare.execute()
     prepare.close()
 
+  }
+  public fun getTimeTilNewThx(sender: IUser): String{
+    val query = SQLQueries.GET_USER.sqliteQuery
+    val prepare = bot.database.connection.prepareStatement(query);
+    prepare.setString(1, sender.stringID)
+    val result = prepare.executeQuery()
+    val lastThx =result.getString("last_given_thx").toLong();
+    val date = Date(System.currentTimeMillis() - lastThx)
+    val formatter = SimpleDateFormat("mm Minutes")
+    prepare.close()
+    return formatter.format(date)
   }
 
   public fun userChat(sender: IUser) {

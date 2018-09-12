@@ -30,9 +30,6 @@ public class Util {
     LinkedHashMap<Key, Value> result = new LinkedHashMap<Key, Value>();
     for (Map.Entry<Key, Value> entry : list) {
       result.put(entry.getKey(), entry.getValue());
-      if (result.size() > 20) {
-        break;
-      }
     }
     return result;
   }
