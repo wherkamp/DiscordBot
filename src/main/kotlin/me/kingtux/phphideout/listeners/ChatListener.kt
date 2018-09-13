@@ -6,8 +6,7 @@ import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedE
 
 class ChatListener(private val bot: Bot) : IListener<MessageReceivedEvent> {
   override fun handle(event: MessageReceivedEvent) {
-    if (event.message.content.startsWith("/$this->") || event.message.author.isBot) {
-
+    if (event.message.content.startsWith("\$this->") || event.message.author.isBot) {
       return;
     }
     bot.userManager.userChat(event.author)

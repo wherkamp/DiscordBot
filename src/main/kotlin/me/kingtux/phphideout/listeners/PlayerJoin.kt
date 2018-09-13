@@ -11,7 +11,6 @@ class PlayerJoin(private val bot: Bot) : IListener<UserJoinEvent> {
   override fun handle(event: UserJoinEvent) {
     event.user.orCreatePMChannel.sendMessage(buildPM(event.user))
     bot.userManager.createUser(event.user.longID)
-    event.user.addRole(bot.registeredRole)
     RequestBuffer.request {
       bot.generalChannel.sendMessage(bot.utils.buildMessage("Welcome ${event.user.mention()} to PhPHideout! We have just private messaged you the rules!").build())
     }

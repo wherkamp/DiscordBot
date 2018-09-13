@@ -30,7 +30,6 @@ class Bot : IListener<ReadyEvent> {
   val database: Database;
   val leaderboardManager: LeaderboardManager
   lateinit var userManager: UserManager;
-  lateinit var registeredRole: IRole;
   lateinit var updatesRole: IRole;
   lateinit var announcementsRole: IRole;
   lateinit var botspamChannel: IChannel;
@@ -68,14 +67,12 @@ class Bot : IListener<ReadyEvent> {
     System.out.println("Server Ready")
     val roles = configYAML["roles"] as ConfigurationSection
     val channels = configYAML["channel"] as ConfigurationSection
-    registeredRole = discordClient.getRoleByID(roles.getLong("member"))
     updatesRole = discordClient.getRoleByID(roles.getLong("updates"))
     announcementsRole = discordClient.getRoleByID(roles.getLong("announcements"))
     botspamChannel = discordClient.getChannelByID(channels.getLong("botspam"))
     welcomeChannel = discordClient.getChannelByID(channels.getLong("welcome"))
     generalChannel = discordClient.getChannelByID(channels.getLong("general"))
     userManager = UserManager(this)
-    println("RegisteredRole ${registeredRole.name}")
     println("UpdatesRole ${updatesRole.name}")
     println("AnnouncementsROle ${announcementsRole.name}")
     println("WelcomeChannel ${welcomeChannel.name}")

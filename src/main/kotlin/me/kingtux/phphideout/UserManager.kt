@@ -5,7 +5,6 @@ import sx.blah.discord.handle.obj.IUser
 import sx.blah.discord.util.EmbedBuilder
 import java.text.SimpleDateFormat
 import java.text.DateFormat
-import com.sun.javafx.perf.PerformanceTracker.logEvent
 import java.util.*
 
 
