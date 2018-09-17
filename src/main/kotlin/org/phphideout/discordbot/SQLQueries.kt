@@ -1,4 +1,4 @@
-package me.kingtux.phphideout
+package org.phphideout.discordbot
 
 enum class SQLQueries {
   CREATE_USER_TABLE("CREATE TABLE IF NOT EXISTS users (\n" +

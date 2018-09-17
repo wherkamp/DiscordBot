@@ -1,8 +1,8 @@
-package me.kingtux.phphideout.commands
+package org.phphideout.discordbot.commands
 
 import de.btobastian.sdcf4j.Command
 import de.btobastian.sdcf4j.CommandExecutor
-import me.kingtux.phphideout.Bot
+import org.phphideout.discordbot.Bot
 import sx.blah.discord.handle.obj.IChannel
 import sx.blah.discord.handle.obj.IMessage
 import sx.blah.discord.handle.obj.IUser

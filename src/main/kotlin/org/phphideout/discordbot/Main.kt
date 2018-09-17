@@ -1,4 +1,4 @@
-package me.kingtux.phphideout
+package org.phphideout.discordbot
 
 import org.apache.commons.io.FileUtils
 import org.simpleyaml.configuration.file.YamlFile

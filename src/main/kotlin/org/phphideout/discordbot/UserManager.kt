@@ -1,4 +1,4 @@
-package me.kingtux.phphideout
+package org.phphideout.discordbot
 
 import sx.blah.discord.api.internal.json.objects.EmbedObject
 import sx.blah.discord.handle.obj.IUser

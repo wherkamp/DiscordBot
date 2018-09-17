@@ -1,28 +1,21 @@
-package me.kingtux.phphideout.commands
+package org.phphideout.discordbot.commands
 
 import de.btobastian.sdcf4j.Command
 import de.btobastian.sdcf4j.CommandExecutor
-import me.kingtux.phphideout.Bot
+import org.phphideout.discordbot.Bot
 import sx.blah.discord.handle.obj.IChannel
 import sx.blah.discord.handle.obj.IMessage
 import sx.blah.discord.handle.obj.IUser
 import sx.blah.discord.util.RequestBuffer
 
 class LeaderboardCommand(val bot: Bot) : CommandExecutor {
-  @Command(aliases = ["leaderboard()"], description = "Gets the leaderbaord", usage = "\$this->leaderboard()")
+  @Command(aliases = ["leaderboard()", "leaderboard();"], description = "Gets the leaderbaord", usage = "\$this->leaderboard()")
   public fun leaderboardCommand(channel: IChannel, message: IMessage): String {
-    RequestBuffer.request {
-      channel.sendMessage(bot.utils.buildMessage("At the moment this command isn't supported").build())
-    }
-    return "";
-    //I need to fix this Leaderboard system later
-    @Suppress("UNREACHABLE_CODE")
     bot.leaderboardManager.createLeaderboard(channel)
-    @Suppress("UNREACHABLE_CODE")
     return ""
   }
 
-  @Command(aliases = ["thx()"], description = "Thxs a user", usage = "\$this->thx() <who>")
+  @Command(aliases = ["thx()","thx();Discord"], description = "Thxs a user", usage = "\$this->thx() <who>")
   public fun registerCommand(args: Array<String>, iUser: IUser, channel: IChannel, message: IMessage): String {
     if (message.mentions.size == 1) {
       if (message.mentions[0] == iUser) {

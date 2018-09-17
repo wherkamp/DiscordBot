@@ -1,4 +1,4 @@
-package me.kingtux.phphideout;
+package org.phphideout.discordbot;
 
 import java.util.ArrayList;
 import java.util.Collections;

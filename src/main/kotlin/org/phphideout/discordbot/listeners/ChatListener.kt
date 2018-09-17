@@ -1,6 +1,6 @@
-package me.kingtux.phphideout.listeners
+package org.phphideout.discordbot.listeners
 
-import me.kingtux.phphideout.Bot
+import org.phphideout.discordbot.Bot
 import sx.blah.discord.api.events.IListener
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent
 

@@ -1,12 +1,14 @@
-package me.kingtux.phphideout
+package org.phphideout.discordbot
 
 import de.btobastian.sdcf4j.handler.Discord4JHandler
-import me.kingtux.phphideout.commands.*
-import me.kingtux.phphideout.leaderboard.LeaderboardManager
-import me.kingtux.phphideout.listeners.ChatListener
-import me.kingtux.phphideout.listeners.LeaveEvent
-import me.kingtux.phphideout.listeners.PlayerJoin
-import me.kingtux.phphideout.listeners.ReactionListener
+import org.phphideout.discordbot.commands.HelpCommand
+import org.phphideout.discordbot.commands.LeaderboardCommand
+import org.phphideout.discordbot.commands.ServerCommands
+import org.phphideout.discordbot.leaderboard.LeaderboardManager
+import org.phphideout.discordbot.listeners.ChatListener
+import org.phphideout.discordbot.listeners.LeaveEvent
+import org.phphideout.discordbot.listeners.PlayerJoin
+import org.phphideout.discordbot.listeners.ReactionListener
 import org.simpleyaml.configuration.ConfigurationSection
 import org.simpleyaml.configuration.file.YamlFile
 import org.yaml.snakeyaml.Yaml
@@ -14,8 +16,10 @@ import sx.blah.discord.api.ClientBuilder
 import sx.blah.discord.api.IDiscordClient
 import sx.blah.discord.api.events.IListener
 import sx.blah.discord.handle.impl.events.ReadyEvent
+import sx.blah.discord.handle.obj.ActivityType
 import sx.blah.discord.handle.obj.IChannel
 import sx.blah.discord.handle.obj.IRole
+import sx.blah.discord.handle.obj.StatusType
 import sx.blah.discord.util.DiscordException
 import java.io.File
 import java.io.FileReader
@@ -33,7 +37,6 @@ class Bot : IListener<ReadyEvent> {
   lateinit var updatesRole: IRole;
   lateinit var announcementsRole: IRole;
   lateinit var botspamChannel: IChannel;
-  lateinit var welcomeChannel: IChannel;
   lateinit var generalChannel: IChannel;
 
   constructor(token: String) {
@@ -70,14 +73,13 @@ class Bot : IListener<ReadyEvent> {
     updatesRole = discordClient.getRoleByID(roles.getLong("updates"))
     announcementsRole = discordClient.getRoleByID(roles.getLong("announcements"))
     botspamChannel = discordClient.getChannelByID(channels.getLong("botspam"))
-    welcomeChannel = discordClient.getChannelByID(channels.getLong("welcome"))
     generalChannel = discordClient.getChannelByID(channels.getLong("general"))
     userManager = UserManager(this)
     println("UpdatesRole ${updatesRole.name}")
     println("AnnouncementsROle ${announcementsRole.name}")
-    println("WelcomeChannel ${welcomeChannel.name}")
     println("BotSpam ${botspamChannel.name}")
     println("General Channel ${generalChannel.name}")
+    discordClient.changePresence(StatusType.ONLINE, ActivityType.PLAYING, "http://phphideout.org")
   }
 
   private fun loadCommands() {
@@ -95,7 +97,7 @@ class Bot : IListener<ReadyEvent> {
     discordClient.dispatcher.registerListener(ChatListener(this))
     discordClient.dispatcher.registerListener(PlayerJoin(this))
     discordClient.dispatcher.registerListener(LeaveEvent(this))
-    discordClient.dispatcher.registerListener(ReactionListener(this))
+  discordClient.dispatcher.registerListener(ReactionListener(this))
 
   }
 }
