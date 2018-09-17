@@ -4,7 +4,6 @@ import sx.blah.discord.api.internal.json.objects.EmbedObject
 import sx.blah.discord.handle.obj.IUser
 import sx.blah.discord.util.EmbedBuilder
 import java.text.SimpleDateFormat
-import java.text.DateFormat
 import java.util.*
 
 
@@ -48,9 +47,10 @@ class UserManager(val bot: Bot) {
     val prepare = bot.database.connection.prepareStatement(query);
     prepare.setString(1, sender.stringID)
     val result = prepare.executeQuery()
-    val lastThx =result.getString("last_given_thx").toLong();
-    val date = Date(System.currentTimeMillis() - lastThx)
-    val formatter = SimpleDateFormat("mm Minutes")
+    val lastThx = result.getString("last_given_thx").toLong() + 1800000;
+    println(lastThx.toString() +"-"+ System.currentTimeMillis().toString() +" = "+ (lastThx - System.currentTimeMillis()).toString() )
+    val date = Date(lastThx - System.currentTimeMillis())
+    val formatter = SimpleDateFormat("mm")
     prepare.close()
     return formatter.format(date)
   }
@@ -98,7 +98,7 @@ class UserManager(val bot: Bot) {
     prepare.setString(1, sender.stringID)
     val result = prepare.executeQuery()
     while (result.next()) {
-      returnThis = System.currentTimeMillis() >= result.getString("last_given_thx").toLong() + 60000;
+      returnThis = System.currentTimeMillis() >= result.getString("last_given_thx").toLong() + 1800000;
     }
     prepare.close()
     return returnThis;

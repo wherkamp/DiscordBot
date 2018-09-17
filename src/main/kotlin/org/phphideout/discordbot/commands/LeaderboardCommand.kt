@@ -32,7 +32,7 @@ class LeaderboardCommand(val bot: Bot) : CommandExecutor {
       }
       if (!bot.userManager.canThx(iUser)) {
         RequestBuffer.request {
-          channel.sendMessage(bot.utils.buildMessage("Sorry you must wait ${bot.userManager.getTimeTilNewThx(iUser)}.").build())
+          channel.sendMessage(bot.utils.buildMessage("Sorry you must wait ${bot.userManager.getTimeTilNewThx(iUser)} minutes til you can use this command again!").build())
         }
         return ""
       }
