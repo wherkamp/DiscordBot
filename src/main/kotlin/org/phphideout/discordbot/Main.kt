@@ -9,6 +9,7 @@ import java.io.IOException
 
 
 fun main(args: Array<String>) {
+  println("Starting PHPHideout's Discord bot")
   Main().init()
 }
 
